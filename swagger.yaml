@@ -124,8 +124,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CertificatePatch'
       responses:
-        '201':
-          description: Certificate was successfully updated for user
+        '202':
+          description: Certificate was successfully updated for user, but has to notify external system
           content:
             application/json:
               schema:
