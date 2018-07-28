@@ -9,12 +9,24 @@ services:
       env: 'local'
     volumes:
       - .:/opt/app
+    depends_on:
+      - database
   api-test:
     build:
       context: ./
       dockerfile: Dockerfile
+    environment:
+      env: 'local'
     command: pytest tests
     volumes:
       - .:/opt/app
+    depends_on:
+      - database
   database:
-    image: postgres:10.6
+    image: postgres:10.4
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: default
+    ports:
+      - 5432:5432
