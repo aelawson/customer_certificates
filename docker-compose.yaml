@@ -5,6 +5,8 @@ services:
     build: ./
     ports:
       - 9000:9000
+    environment:
+      env: 'local'
     volumes:
       - .:/opt/app
   api-test:

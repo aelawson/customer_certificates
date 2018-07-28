@@ -1,0 +1,10 @@
+prd:
+  db:
+    host: 'database'
+    user: 'xxxx'
+    pass: 'xxxx'
+local:
+  db:
+    host: 'database'
+    user: 'root'
+    pass: 'root'
