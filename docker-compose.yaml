@@ -16,3 +16,5 @@ services:
     command: pytest tests
     volumes:
       - .:/opt/app
+  database:
+    image: postgres:10.6
