@@ -5,7 +5,7 @@ from src.models import Base
 class Certificate(Base):
     __tablename__ = 'certificates'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer)
     private_key = Column(String)
     active = Column(SmallInteger)
