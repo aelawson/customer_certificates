@@ -13,6 +13,9 @@ class HelloResource:
         resp.body = 'Hello World!'
 
 def create():
+    """
+    Creates app instance and instantiates routes.
+    """
     app = falcon.API()
     app.add_route('/hello', HelloResource())
 
