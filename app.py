@@ -1,5 +1,8 @@
 import falcon
 
+from src.middleware.session import RequestSessionMiddleware
+from src.services.db import DbSession
+
 class HelloResource:
     """
     Resource used as a test resource that says "Hello World!"
@@ -14,9 +17,12 @@ class HelloResource:
 
 def create():
     """
-    Creates app instance and instantiates routes.
+    Creates app instance and instantiates middleware / routes.
     """
-    app = falcon.API()
+    app = falcon.API(middleware=[
+        RequestSessionMiddleware(DbSession)
+    ])
+
     app.add_route('/hello', HelloResource())
 
     return app
