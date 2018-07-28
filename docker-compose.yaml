@@ -7,3 +7,9 @@ services:
       - 9000:9000
     volumes:
       - .:/opt/app
+  api-test:
+    build:
+      context: ./
+      dockerfile: tests/Dockerfile
+    volumes:
+      - .:/opt/app

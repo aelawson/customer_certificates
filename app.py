@@ -12,8 +12,10 @@ class HelloResource:
         resp.status = falcon.HTTP_200
         resp.body = 'Hello World!'
 
-app = falcon.API()
+def create():
+    app = falcon.API()
+    app.add_route('/hello', HelloResource())
 
-hello = HelloResource()
+    return app
 
-app.add_route('/hello', hello)
+app = create()
