@@ -1,10 +1,16 @@
 prd:
   db:
     host: 'database'
+    port: '5432'
     user: 'xxxx'
     pass: 'xxxx'
+    engine: 'postgresql'
+    db: 'default'
 local:
   db:
     host: 'database'
+    port: '5432'
     user: 'root'
     pass: 'root'
+    engine: 'postgresql'
+    db: 'default'
