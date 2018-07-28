@@ -10,6 +10,8 @@ services:
   api-test:
     build:
       context: ./
-      dockerfile: tests/Dockerfile
+      dockerfile: Dockerfile
+    entrypoint: pytest
+    command: tests
     volumes:
       - .:/opt/app
