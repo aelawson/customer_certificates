@@ -97,6 +97,15 @@ paths:
           description: User not found
         '500':
           description: Internal server error
+    get:
+      summary: List certificates for a user
+      responses:
+        '200':
+          description: Certificates successfully found
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
   /users/{user_id}/certificates/{certificate_id}:
     parameters:
       - name: user_id
