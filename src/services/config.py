@@ -1,7 +1,7 @@
 import yaml
 import os
 
-env = os.environ.get('env', 'prd')
+env = os.environ.get('env', 'local')
 
 with open('config.yaml') as conf:
     conf_base = yaml.safe_load(conf)

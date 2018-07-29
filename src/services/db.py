@@ -11,7 +11,4 @@ engine = create_engine(
     )
 )
 
-# Create all tables (if they don't exist)
-Base.metadata.create_all(engine)
-
 DbSession = scoped_session(sessionmaker(bind=engine))
