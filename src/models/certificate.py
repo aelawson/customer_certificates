@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, SmallInteger, LargeBinary, JSON
+from sqlalchemy import Column, Integer, SmallInteger, LargeBinary, Text
 
 from src.models import Base
 
@@ -9,7 +9,7 @@ class Certificate(Base):
     user_id = Column(Integer)
     private_key = Column(LargeBinary)
     active = Column(SmallInteger)
-    body = Column(JSON)
+    body = Column(Text)
 
     def __repr__(self):
         return "Certificate<(id={id}, user_id={user_id}, active={active})>".format(
