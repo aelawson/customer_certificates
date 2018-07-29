@@ -12,15 +12,12 @@ from logging.config import fileConfig
 
 from src.models import Base
 from src.services.config import Config
+from src.services.db import DBService
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-database_url = '{engine}://{user}:{pass}@{host}:{port}/{db}'.format(
-    **Config['db']
-)
-
 config = context.config
-config.set_section_option('alembic', 'sqlalchemy.url', database_url)
+config.set_section_option('alembic', 'sqlalchemy.url', DBService.get_db_connection_str())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

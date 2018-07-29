@@ -6,7 +6,7 @@ services:
     ports:
       - 9000:9000
     environment:
-      env: 'local'
+      env: 'lcl'
     volumes:
       - .:/opt/app
     depends_on:
@@ -16,12 +16,10 @@ services:
       context: ./
       dockerfile: Dockerfile
     environment:
-      env: 'local'
+      env: 'tst'
     command: pytest tests
     volumes:
       - .:/opt/app
-    depends_on:
-      - database
   database:
     image: postgres:10.4
     environment:

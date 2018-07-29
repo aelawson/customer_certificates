@@ -6,7 +6,7 @@ from src.middleware.session import RequestSessionMiddleware
 
 from src.resources.healthcheck import Healthcheck
 
-from src.services.db import DbSession
+from src.services.db import DBService
 
 def create():
     """
@@ -14,7 +14,7 @@ def create():
     """
     app = falcon.API(middleware=[
         ContentTypeMiddleware(),
-        RequestSessionMiddleware(DbSession)
+        RequestSessionMiddleware(DBService.get_db_session())
     ])
     app.set_error_serializer(ErrorSerializer)
 

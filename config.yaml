@@ -1,3 +1,5 @@
+envs: ['lcl', 'prd', 'tst']
+
 prd:
   db:
     host: 'database'
@@ -6,7 +8,7 @@ prd:
     pass: 'xxxx'
     engine: 'postgresql'
     db: 'default'
-local:
+lcl:
   db:
     host: 'database'
     port: '5432'
@@ -14,3 +16,5 @@ local:
     pass: 'root'
     engine: 'postgresql'
     db: 'default'
+tst:
+  # nothing yet
