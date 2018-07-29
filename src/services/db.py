@@ -9,8 +9,10 @@ from src.services.config import Config
 
 class DBService:
 
-    @classmethod
-    def get_db_connection_str(cls):
+    def __init__(self):
+        self.engine = self.get_db_engine()
+
+    def get_db_connection_str(self):
         if os.environ.get('env') == 'tst':
             return 'sqlite:////opt/app/test.db'
         else:
@@ -18,9 +20,11 @@ class DBService:
                 **Config['db']
             )
 
-    @classmethod
-    def get_db_session(cls):
-        connection_str = cls.get_db_connection_str()
-        engine = create_engine(connection_str)
+    def get_db_engine(self):
+        connection_str = self.get_db_connection_str()
+        return create_engine(connection_str)
 
-        return scoped_session(sessionmaker(bind=engine))
+    def get_db_session(self):
+        return scoped_session(sessionmaker(bind=self.engine))
+
+DB = DBService()

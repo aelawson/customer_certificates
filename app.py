@@ -5,8 +5,9 @@ from src.middleware.content_type import ContentTypeMiddleware
 from src.middleware.session import RequestSessionMiddleware
 
 from src.resources.healthcheck import Healthcheck
+from src.resources.users import Users
 
-from src.services.db import DBService
+from src.services.db import DB
 
 def create():
     """
@@ -14,11 +15,12 @@ def create():
     """
     app = falcon.API(middleware=[
         ContentTypeMiddleware(),
-        RequestSessionMiddleware(DBService.get_db_session())
+        RequestSessionMiddleware(DB.get_db_session())
     ])
     app.set_error_serializer(ErrorSerializer)
 
     app.add_route('/healthcheck', Healthcheck())
+    app.add_route('/users', Users())
 
     return app
 
