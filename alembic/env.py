@@ -12,12 +12,12 @@ from logging.config import fileConfig
 
 from src.models import Base
 from src.services.config import Config
-from src.services.db import DBService
+from src.services.db import DB
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_section_option('alembic', 'sqlalchemy.url', DBService.get_db_connection_str())
+config.set_section_option('alembic', 'sqlalchemy.url', DB.get_db_connection_str())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -49,7 +49,11 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True)
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        compare_type=True
+    )
 
     with context.begin_transaction():
         context.run_migrations()
@@ -70,7 +74,8 @@ def run_migrations_online():
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=target_metadata
+            target_metadata=target_metadata,
+            compare_type=True
         )
 
         with context.begin_transaction():
