@@ -1,7 +1,7 @@
 FROM alpine:3.6
 
 RUN apk update && apk add python3 python3-dev gcc \
-    libc-dev linux-headers postgresql-dev dumb-init
+    libc-dev linux-headers libffi-dev postgresql-dev dumb-init
 
 ADD ./requirements.txt /opt/app/requirements.txt
 WORKDIR /opt/app
