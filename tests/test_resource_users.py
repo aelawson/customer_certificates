@@ -2,7 +2,7 @@ import falcon
 import pytest
 import json
 
-class TestHealthcheck():
+class TestUsersResource():
     def test_users_create_success(self, client, fake):
         payload = {
             'name': fake.name(),

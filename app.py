@@ -5,7 +5,7 @@ from src.middleware.content_type import ContentTypeMiddleware
 from src.middleware.session import RequestSessionMiddleware
 
 from src.resources.healthcheck import Healthcheck
-from src.resources.users import Users
+from src.resources.users import UserResource, UsersResource
 
 from src.services.db import DB
 
@@ -20,7 +20,8 @@ def create():
     app.set_error_serializer(ErrorSerializer)
 
     app.add_route('/healthcheck', Healthcheck())
-    app.add_route('/users', Users())
+    app.add_route('/users', UsersResource())
+    app.add_route('/users/{user_id:int}', UserResource())
 
     return app
 
