@@ -5,6 +5,7 @@ import falcon
 import json
 
 from src.models.user import User
+from src.services.password import PasswordService
 
 class UsersResource:
     """
@@ -14,14 +15,16 @@ class UsersResource:
     def on_post(self, req, resp):
         """
         Handles POST requests to the /users endpoint
+        Creates a user resource.
         """
         try:
             payload = json.loads(req.stream.read().decode('utf-8'))
+            hashed_pass = PasswordService.hash(payload['password'])
 
             user = User(
                 name=payload['name'],
                 email=payload['email'],
-                password=payload['password']
+                password=hashed_pass
             )
 
             self.session.add(user)
