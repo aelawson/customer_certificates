@@ -12,7 +12,7 @@ class ContentTypeMiddleware:
             )
 
         if req.method in ('POST', 'PUT'):
-            if req.content_type and 'applicaton/json' not in req.content_type:
+            if req.content_type and 'application/json' not in req.content_type:
                 raise falcon.HTTPUnsupportedMediaType(
                     description='JSON is the only supported request format'
                 )
