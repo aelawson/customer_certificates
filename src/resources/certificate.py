@@ -5,6 +5,7 @@ import json
 from sqlalchemy.orm.exc import NoResultFound
 
 from src.models.certificate import Certificate
+from src.services.hash import HashService
 
 class CertificatesResource:
     """
@@ -19,10 +20,11 @@ class CertificatesResource:
         try:
             payload = json.loads(req.stream.read().decode('utf-8'))
             private_key = base64.b64decode(payload['private_key'])
+            hashed_key = HashService.hash_raw(private_key)
 
             cert = Certificate(
                 user_id=kwargs.get('user_id'),
-                private_key=private_key,
+                private_key=hashed_key,
                 active=payload['active'],
                 body=payload['body']
             )
