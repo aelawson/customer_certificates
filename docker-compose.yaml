@@ -11,6 +11,7 @@ services:
       - .:/opt/app
     depends_on:
       - database
+      - cert-service
   api-test:
     build:
       context: ./
@@ -28,3 +29,7 @@ services:
       POSTGRES_DB: default
     ports:
       - 5432:5432
+  cert-service:
+    image: kennethreitz/httpbin
+    ports:
+      - 8080:80

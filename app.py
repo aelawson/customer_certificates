@@ -6,7 +6,7 @@ from src.middleware.session import RequestSessionMiddleware
 
 from src.resources.healthcheck import Healthcheck
 from src.resources.users import UserResource, UsersResource
-from src.resources.certificate import CertificatesResource
+from src.resources.certificate import CertificatesResource, CertificateActiveResource
 
 from src.services.db import DB
 
@@ -24,6 +24,7 @@ def create():
     app.add_route('/users', UsersResource())
     app.add_route('/users/{user_id:int}', UserResource())
     app.add_route('/users/{user_id:int}/certificates', CertificatesResource())
+    app.add_route('/users/{user_id:int}/certificates/{certificate_id:int}/active', CertificateActiveResource())
 
     return app
 
