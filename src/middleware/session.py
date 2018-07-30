@@ -17,10 +17,12 @@ class RequestSessionMiddleware:
     def process_response(self, req, resp, resource, req_succeeded):
         """
         Remove the ression after the request has been handled.
-        Rollback if the request failed.
+        End transaction - rollback if the request failed and commit otherwise.
         """
         if hasattr(resource, 'session'):
             if not req_succeeded:
                 resource.session.rollback()
+            else:
+                resource.session.commit()
 
         self.session.remove()

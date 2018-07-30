@@ -31,7 +31,6 @@ class CertificatesResource:
             )
 
             self.session.add(cert)
-            self.session.commit()
         except KeyError:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: private_key, active, or body'
