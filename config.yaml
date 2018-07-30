@@ -1,5 +1,3 @@
-envs: ['lcl', 'prd', 'tst']
-
 prd:
   db:
     host: 'database'
@@ -8,6 +6,9 @@ prd:
     pass: 'xxxx'
     engine: 'postgresql'
     db: 'default'
+  cert-service:
+    host: 'cert-service'
+    port: 8080
 lcl:
   db:
     host: 'database'
@@ -16,5 +17,6 @@ lcl:
     pass: 'root'
     engine: 'postgresql'
     db: 'default'
-tst:
-  # nothing yet
+  cert-service:
+    host: 'cert-service'
+    port: 8080
