@@ -5,7 +5,7 @@ import falcon
 import json
 
 from src.models.user import User
-from src.services.password import PasswordService
+from src.services.hash import HashService
 
 class UsersResource:
     """
@@ -19,7 +19,7 @@ class UsersResource:
         """
         try:
             payload = json.loads(req.stream.read().decode('utf-8'))
-            hashed_pass = PasswordService.hash(payload['password'])
+            hashed_pass = HashService.hash(payload['password'])
 
             user = User(
                 name=payload['name'],

@@ -2,7 +2,7 @@ import base64
 import bcrypt
 import hashlib
 
-class PasswordService:
+class HashService:
     """
     Service encapsulating password-related functionality e.g. hashing and verification.
     """
@@ -20,6 +20,18 @@ class PasswordService:
         return bcrypt.hashpw(b64_encoded, bcrypt.gensalt()).decode('utf-8')
 
     @classmethod
+    def hash_raw(cls, raw_data):
+        """
+        Given raw data, return it's bcrypt hash (does not attempt to encode or decode data).
+        The password is first hashed via SHA-256 then B64-encoded to prevent
+        null byte issues and circumvent the 72-char limit imposed by bcrypt.
+        """
+        sha256_encoded = hashlib.sha256(raw_data)
+        b64_encoded = base64.b64encode(sha256_encoded.digest())
+
+        return bcrypt.hashpw(b64_encoded, bcrypt.gensalt())
+
+    @classmethod
     def verify(cls, plain_text, hashed):
         """
         Given a plain_text password and a bcrypt hash, check if it matches the hash.
@@ -29,3 +41,14 @@ class PasswordService:
         b64_encoded = base64.b64encode(sha256_encoded.digest())
 
         return bcrypt.checkpw(b64_encoded, hashed.encode('utf-8'))
+
+    @classmethod
+    def verify_raw(cls, raw_data, hashed):
+        """
+        Given raw data and a bcrypt hash, check if it matches the hash (does not attempt to encode or decode data).
+        The plain test password is pre-hashed identically to the hash() function.
+        """
+        sha256_encoded = hashlib.sha256(raw_data)
+        b64_encoded = base64.b64encode(sha256_encoded.digest())
+
+        return bcrypt.checkpw(b64_encoded, hashed)

@@ -80,3 +80,10 @@ def generate_n_certs(request, client):
 @pytest.fixture(scope='function')
 def private_key(request):
     return create_private_key()
+
+@pytest.fixture(scope='function')
+def private_key_n_bytes(request):
+    def __inner(n):
+        return bytearray(random.getrandbits(8) for _ in range(n))
+
+    return __inner
