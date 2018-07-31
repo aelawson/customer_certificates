@@ -3,10 +3,12 @@ import falcon
 import json
 
 from requests.exceptions import HTTPError
-from sqlalchemy.exc import DataError
+from sqlalchemy import exists
+from sqlalchemy.exc import DataError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 from src.models.certificate import Certificate
+from src.models.user import User
 from src.services.caching_query import FromCache
 from src.services.certificate import CertificateService
 
@@ -38,6 +40,10 @@ class CertificatesResource:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: private_key, active, or body'
             )
+        except IntegrityError:
+            raise falcon.HTTPNotFound(
+                description='User does not exist'
+            )
         except DataError:
             raise falcon.HTTPUnprocessableEntity(
                 description='Bad request format - make sure all fields are the proper data type.'
@@ -52,6 +58,15 @@ class CertificatesResource:
         Lists certificate resources for a user.
         """
         try:
+            user_exists = self.session.query(
+                exists().where(User.id == kwargs.get('id'))
+            ).scalar()
+
+            if not user_exists:
+                raise falcon.HTTPNotFound(
+                    description='User does not exist'
+                )
+
             certs = self.session.query(Certificate)\
                 .filter(Certificate.user_id == kwargs.get('user_id'))\
                 .all()
