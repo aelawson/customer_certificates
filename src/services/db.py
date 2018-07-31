@@ -21,13 +21,9 @@ class DBService:
         """
         Returns db connection string based on env.
         """
-        # Hardcode tst env db connection to use SQLLite
-        if os.environ.get('env') == 'tst':
-            return 'sqlite:////opt/app/test.db'
-        else:
-            return '{engine}://{user}:{pass}@{host}:{port}/{db}'.format(
-                **Config['db']
-            )
+        return '{engine}://{user}:{pass}@{host}:{port}/{db}'.format(
+            **Config['db']
+        )
 
     def get_db_engine(self):
         """
