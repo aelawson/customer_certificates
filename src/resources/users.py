@@ -1,4 +1,4 @@
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, DataError
 from sqlalchemy.orm.exc import NoResultFound
 
 import falcon
@@ -37,6 +37,10 @@ class UsersResource:
         except IntegrityError:
             raise falcon.HTTPConflict(
                 description='User with this email already exists'
+            )
+        except DataError:
+            raise falcon.HTTPUnprocessableEntity(
+                description='Bad request format'
             )
 
         resp.status = falcon.HTTP_201

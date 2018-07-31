@@ -3,6 +3,7 @@ import falcon
 import json
 
 from requests.exceptions import HTTPError
+from sqlalchemy.exc import DataError
 from sqlalchemy.orm.exc import NoResultFound
 
 from src.models.certificate import Certificate
@@ -38,6 +39,10 @@ class CertificatesResource:
         except KeyError:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: private_key, active, or body'
+            )
+        except DataError:
+            raise falcon.HTTPUnprocessableEntity(
+                description='Bad request format - make sure all fields are the proper data type.'
             )
 
         resp.status = falcon.HTTP_201
