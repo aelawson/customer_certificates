@@ -23,6 +23,21 @@ class TestCertsResource():
         assert result.status == falcon.HTTP_201
         assert data['user_id'] == user['id']
 
+    def test_cert_create_fail_user_not_found(self, client, private_key):
+        b64_encoded_key = base64.b64encode(private_key).decode('utf-8')
+
+        payload = {
+            'private_key': b64_encoded_key,
+            'active': 0,
+            'body': 'my test body'
+        }
+        result = client.simulate_post(
+            '/users/{user_id}/certificates'.format(user_id=-1),
+            json=payload
+        )
+
+        assert result.status == falcon.HTTP_404
+
     def test_cert_list(self, client, user, generate_n_certs):
         result = client.simulate_get('/users/{user_id}/certificates'.format(user_id=user['id']))
         certs = result.json

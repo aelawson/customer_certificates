@@ -40,6 +40,10 @@ class TestUserResource():
 
         assert result.status == falcon.HTTP_204
 
+        result = client.simulate_delete('/users/{user_id}'.format(user_id=user['id']))
+
+        assert result.status == falcon.HTTP_404
+
     def test_user_delete_cert_cascade_success(self, client, user, generate_n_certs):
         generated_certs = generate_n_certs(10, user)
 
@@ -51,10 +55,7 @@ class TestUserResource():
 
         result = client.simulate_get('/users/{user_id}/certificates'.format(user_id=user['id']))
 
-        assert result.status == falcon.HTTP_200
-
-        data = result.json
-        assert len(data) == 0
+        assert result.status == falcon.HTTP_404
 
     def test_user_delete_fail(self, client, user):
         result = client.simulate_delete('/users/{user_id}'.format(user_id=-1))

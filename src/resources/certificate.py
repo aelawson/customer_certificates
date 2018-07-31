@@ -59,7 +59,7 @@ class CertificatesResource:
         """
         try:
             user_exists = self.session.query(
-                exists().where(User.id == kwargs.get('id'))
+                exists().where(User.id == kwargs.get('user_id'))
             ).scalar()
 
             if not user_exists:
