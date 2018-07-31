@@ -33,6 +33,8 @@ services:
       POSTGRES_DB: default
     ports:
       - 5432:5432
+    volumes:
+      - database_api:/var/lib/postgresql/data
   cert-service:
     image: kennethreitz/httpbin
     ports:
@@ -41,3 +43,6 @@ services:
     image: redis:4.0.10
     ports:
       - 6379:6379
+
+volumes:
+  database_api:
