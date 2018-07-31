@@ -8,7 +8,7 @@ class Certificate(Base):
     __tablename__ = 'certificates'
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     private_key = Column(LargeBinary, nullable=False)
     active = Column(SmallInteger, nullable=False)
     body = Column(Text, nullable=False)

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from src.models import Base
 
@@ -9,6 +10,8 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
+
+    certificates = relationship("Certificate", backref="users", passive_deletes=True)
 
     def __repr__(self):
         return "User<(id={id}, name={name}, email={email})>".format(
