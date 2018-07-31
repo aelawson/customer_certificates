@@ -11,11 +11,12 @@ from src.services.hash import HashService
 class UsersResource:
     """
     Resource for creating users
+    Endpoint: /users
     """
 
     def on_post(self, req, resp):
         """
-        Handles POST requests to the /users endpoint
+        Handles POST requests.
         Creates a user resource.
         """
         try:
@@ -49,6 +50,7 @@ class UsersResource:
 class UserResource:
     """
     Resource for retrieving or deleting a user
+    Endpoint: /users/{user_id}
     """
 
     def on_get(self, req, resp, **kwargs):
