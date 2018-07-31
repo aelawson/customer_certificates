@@ -98,6 +98,7 @@ class UserResource:
             user_query.invalidate()
 
             self.session.delete(user)
+            self.session.commit()
         except NoResultFound:
             raise falcon.HTTPNotFound(
                 description='User does not exist'
