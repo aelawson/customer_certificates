@@ -28,6 +28,7 @@ class UsersResource:
             )
 
             self.session.add(user)
+            self.session.commit()
         except KeyError:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: name, email, or password'

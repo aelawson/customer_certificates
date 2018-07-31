@@ -22,7 +22,5 @@ class RequestSessionMiddleware:
         if hasattr(resource, 'session'):
             if not req_succeeded:
                 resource.session.rollback()
-            else:
-                resource.session.commit()
 
         self.session.remove()

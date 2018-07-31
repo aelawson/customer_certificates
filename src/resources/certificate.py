@@ -33,6 +33,7 @@ class CertificatesResource:
             )
 
             self.session.add(cert)
+            self.session.commit()
         except KeyError:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: private_key, active, or body'
@@ -83,8 +84,6 @@ class CertificateActiveResource():
                 .filter(Certificate.id == kwargs.get('certificate_id'))\
                 .filter(Certificate.user_id == kwargs.get('user_id')).one()
 
-            print(kwargs.get('certificate_id'))
-            print(cert)
             if payload['active'] == cert.active:
                 raise falcon.HTTPBadRequest(
                     description='Certificate is already in the requested active state'
