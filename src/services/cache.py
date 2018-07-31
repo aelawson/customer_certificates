@@ -17,13 +17,15 @@ class CacheService:
         """
         Given a cache region, set it's configuration based on config settings.
         """
-        try:
-            self.regions[region].configure_from_config({
-                'cache.redis.backend': "dogpile.cache.redis",
-                'cache.redis.arguments.host': Config['cache']['host'],
-                'cache.redis.arguments.port': Config['cache']['port'],
-            }, 'cache.redis')
-        except KeyError:
-            raise Exception('Cache region does not exist.')
+        self.regions[region].configure(
+            "dogpile.cache.redis",
+            arguments={
+                'host': Config['cache']['host'],
+                'port': Config['cache']['port'],
+                'db': Config['cache']['db'],
+                'redis_expiration_time': Config['cache']['ttl']
+            }
+        )
 
-Cache = CacheService
+Cache = CacheService()
+Cache.set_cache_region_config('default')

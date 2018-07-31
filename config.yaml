@@ -1,4 +1,9 @@
 prd:
+  cache:
+    host: 'cache'
+    db: 0
+    port: 6379
+    ttl: 3600
   db:
     host: 'database'
     port: '5432'
@@ -10,6 +15,11 @@ prd:
     host: 'cert-service'
     port: 8080
 lcl:
+  cache:
+    host: 'cache'
+    db: 0
+    port: 6379
+    ttl: 3600
   db:
     host: 'database'
     port: '5432'
@@ -17,6 +27,15 @@ lcl:
     pass: 'root'
     engine: 'postgresql'
     db: 'default'
+  cert-service:
+    host: 'cert-service'
+    port: 8080
+tst:
+  cache:
+    host: 'cache'
+    db: 1
+    port: 6379
+    ttl: 3600
   cert-service:
     host: 'cert-service'
     port: 8080
