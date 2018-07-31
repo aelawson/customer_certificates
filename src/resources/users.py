@@ -5,6 +5,7 @@ import falcon
 import json
 
 from src.models.user import User
+from src.services.caching_query import FromCache
 from src.services.hash import HashService
 
 class UsersResource:
@@ -52,9 +53,12 @@ class UserResource:
         Retrieves a user resource.
         """
         try:
-            user = self.session.query(User).filter(
-                User.id == kwargs.get('user_id')
-            ).one()
+            user = self.session.query(User)\
+                .options(FromCache('default'))\
+                .filter(
+                    User.id == kwargs.get('user_id')
+                )\
+                .one()
         except KeyError:
             raise falcon.HTTPBadRequest(
                 description='Missing one or more of the following fields: name, email, or password'
@@ -77,9 +81,16 @@ class UserResource:
         Deletes a user resource.
         """
         try:
-            user = self.session.query(User).filter(
-                User.id == kwargs.get('user_id')
-            ).one()
+            user_query = self.session.query(User)\
+                .options(FromCache('default'))\
+                .filter(
+                    User.id == kwargs.get('user_id')
+                )\
+
+            # Invalidate the cache
+            user = user_query.one()
+            user_query.invalidate()
+
             self.session.delete(user)
         except NoResultFound:
             raise falcon.HTTPNotFound(

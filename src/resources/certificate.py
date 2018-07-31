@@ -6,6 +6,7 @@ from requests.exceptions import HTTPError
 from sqlalchemy.orm.exc import NoResultFound
 
 from src.models.certificate import Certificate
+from src.services.caching_query import FromCache
 from src.services.hash import HashService
 from src.services.certificate import CertificateService
 
@@ -49,7 +50,8 @@ class CertificatesResource:
         """
         try:
             certs = self.session.query(Certificate)\
-                .filter(Certificate.user_id == kwargs.get('user_id')).all()
+                .options(FromCache('default'))\
+                .all()
         except NoResultFound:
             raise falcon.HTTPNotFound(
                 description='No certificates found for the specified user'
@@ -80,9 +82,14 @@ class CertificateActiveResource():
 
         # Update active status in the DB
         try:
-            cert = self.session.query(Certificate)\
+            cert_query = self.session.query(Certificate)\
+                .options(FromCache('default'))\
                 .filter(Certificate.id == kwargs.get('certificate_id'))\
-                .filter(Certificate.user_id == kwargs.get('user_id')).one()
+                .filter(Certificate.user_id == kwargs.get('user_id'))\
+
+            # Invalidate the cache
+            cert = cert_query.one()
+            cert_query.invalidate()
 
             if payload['active'] == cert.active:
                 raise falcon.HTTPBadRequest(
