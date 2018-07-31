@@ -47,7 +47,8 @@ class UserResource:
 
     def on_get(self, req, resp, **kwargs):
         """
-        Handles GET requests to the /users/{user_id} endpoint
+        Handles GET requests.
+        Retrieves a user resource.
         """
         try:
             user = self.session.query(User).filter(
@@ -69,8 +70,19 @@ class UserResource:
             'email': user.email
         })
 
-    def on_delete(self, req, resp):
+    def on_delete(self, req, resp, **kwargs):
         """
-        Handles DELETE requests to the /users/{user_id} endpoint
+        Handles DELETE requests.
+        Deletes a user resource.
         """
-        pass
+        try:
+            user = self.session.query(User).filter(
+                User.id == kwargs.get('user_id')
+            ).one()
+            self.session.delete(user)
+        except NoResultFound:
+            raise falcon.HTTPNotFound(
+                description='User does not exist'
+            )
+
+        resp.status = falcon.HTTP_204
