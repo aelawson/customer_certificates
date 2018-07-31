@@ -50,7 +50,7 @@ class CertificatesResource:
         """
         try:
             certs = self.session.query(Certificate)\
-                .options(FromCache('default'))\
+                .filter(Certificate.user_id == kwargs.get('user_id'))\
                 .all()
         except NoResultFound:
             raise falcon.HTTPNotFound(
