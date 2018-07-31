@@ -10,7 +10,6 @@ class TestCertsResource():
         b64_encoded_key = base64.b64encode(private_key).decode('utf-8')
 
         payload = {
-            'user_id': user['id'],
             'private_key': b64_encoded_key,
             'active': False,
             'body': 'my test body'
