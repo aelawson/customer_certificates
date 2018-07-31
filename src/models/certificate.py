@@ -1,15 +1,17 @@
 from sqlalchemy import Column, Integer, SmallInteger, LargeBinary, Text
+from sqlalchemy.schema import ForeignKey
 
 from src.models import Base
+from src.models.user import User
 
 class Certificate(Base):
     __tablename__ = 'certificates'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer)
-    private_key = Column(LargeBinary)
-    active = Column(SmallInteger)
-    body = Column(Text)
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    private_key = Column(LargeBinary, nullable=False)
+    active = Column(SmallInteger, nullable=False)
+    body = Column(Text, nullable=False)
 
     def __repr__(self):
         return "Certificate<(id={id}, user_id={user_id}, active={active})>".format(
