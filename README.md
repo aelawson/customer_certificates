@@ -26,7 +26,9 @@ docker-compose up api
 The API is exposed at `localhost:9000`. You can change this in `docker-compose.yaml` or when you run the Docker container.
 
 ## Usage
-This a HTTP-based / RESTful API. The only supported serialization format is JSON - ensure your `Accept` header is set properly / will accept a `application/json` response. Your `Content-Type` header should also be set to `application/json` and ensure you are sending a JSON request body (when applicable). Trying to use any other format will result in a 400-level error.
+This is a HTTP-based / RESTful API. The only supported serialization format is JSON - ensure your `Accept` header is set properly / will accept a `application/json` response. Your `Content-Type` header should also be set to `application/json` and ensure you are sending a JSON request body (when applicable). Trying to use any other format will result in a 400-level error.
+
+Bytes are passed via JSON by base64-encoding them (more on that below).
 
 A few examples below demonstrate how to use the API with a REST / HTTP client (not exhaustive, please refer to the `swagger.yaml` file or even `app.py` for a complete list of endpoints):
 
@@ -149,7 +151,7 @@ I have defined my DB schema using the `SQLAlchemy` ORM - if you are unfamiliar, 
 
 #### Resources / Endpoints
 
-I used Swagger to define my API spec - this mostly just served as a planning template and reference it is not ingested by the Falcon framework. You might find it helpful to get an good overview of how I designed the API.
+I used Swagger to define my API spec - this just serves as a reference and it is not ingested by the Falcon framework. You might find it helpful to get a good overview of how I designed the API.
 
 You can find each resource in the `resources` dir. They are mapped / registered to actual paths in the `app.py` file. I have added docstrings wherever possible to make understanding easier.
 
