@@ -87,7 +87,10 @@ class CertificatesResource:
 
         resp.status = falcon.HTTP_200
         resp.body = json.dumps(list(
-            map(lambda c: { 'id': c.id, 'user_id': c.user_id, 'body': c.body }, certs)
+            map(
+                lambda c: { 'id': c.id, 'body': c.body, 'active': c.active },
+                certs
+            )
         ))
 
 class CertificateActiveResource():
