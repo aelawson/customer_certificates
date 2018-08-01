@@ -103,8 +103,8 @@ paths:
         - in: query
           name: active
           schema:
-            type: integer
-          description: Filter only active certificates if enabled otherwise all certificates are returned
+            type: string
+          description: Return only active certificates if set to 'true' otherwise all certificates
       responses:
         '200':
           description: Certificates successfully found

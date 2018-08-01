@@ -12,7 +12,7 @@ class TestCertResource():
                 user_id=cert['user_id'],
                 certificate_id=cert['id']
             ),
-            json={ 'active': 1 }
+            json={ 'active': True }
         )
 
         assert result.status == falcon.HTTP_202
@@ -39,7 +39,7 @@ class TestCertResource():
                 user_id=cert['user_id'],
                 certificate_id=cert['id']
             ),
-            json={ 'active': 1, 'fake': 'field' }
+            json={ 'active': True, 'fake': 'field' }
         )
 
         assert result.status == falcon.HTTP_400
@@ -50,7 +50,7 @@ class TestCertResource():
                 user_id=-1,
                 certificate_id=cert['id']
             ),
-            json={ 'active': 1 }
+            json={ 'active': True }
         )
 
         assert result.status == falcon.HTTP_404
@@ -61,7 +61,7 @@ class TestCertResource():
                 user_id=cert['user_id'],
                 certificate_id=-1
             ),
-            json={ 'active': 1 }
+            json={ 'active': True }
         )
 
         assert result.status == falcon.HTTP_404
@@ -72,7 +72,7 @@ class TestCertResource():
                 user_id=cert['user_id'],
                 certificate_id=cert['id']
             ),
-            json={ 'active': 0 }
+            json={ 'active': False }
         )
 
         assert result.status == falcon.HTTP_400

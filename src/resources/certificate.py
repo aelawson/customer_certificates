@@ -69,18 +69,13 @@ class CertificatesResource:
         cert_query = self.session.query(Certificate)\
             .filter(Certificate.user_id == kwargs.get('user_id'))
 
-        try:
-            filter_active = int(req.get_param('active', default=0))
-        except:
-            raise falcon.HTTPUnprocessableEntity(
-                description='Bad request format - active query parameter must be 0 or 1.'
-            )
+        filter_active = req.get_param('active', default='false')
 
-        if filter_active not in [0, 1]:
+        if filter_active not in ['true', 'false']:
             raise falcon.HTTPUnprocessableEntity(
-                description='Bad request format - active query parameter must be 0 or 1.'
+                description='Bad request format - active query parameter must be "true" or "false".'
             )
-        elif filter_active == 1:
+        elif filter_active == 'true':
             cert_query = cert_query.filter(Certificate.active == True)
 
         certs = cert_query.all()

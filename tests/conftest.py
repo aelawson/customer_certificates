@@ -20,7 +20,7 @@ def create_cert(client, user, private_key, active=False):
 
     payload = {
         'private_key': b64_encoded_key,
-        'active': 0 if not active else 1,
+        'active': active,
         'body': 'my test body'
     }
     result = client.simulate_post(
