@@ -116,6 +116,8 @@ As far as coding design goes I would like to add at least the following:
 
 * Foreign Keys
 	* I thought it would be best to apply maximum data integrity constraints without knowing more about the application.
+* Composite Index
+	* I added a composite index on `user_id` and `id` on the certificates table.
 * Hard Deletes
 	* When a user or certificate is deleted, it is actually deleted. I would want to know more information about the system to make a fully-educated decision on what to do here - moving deleted users to a separate archive table or just simply using soft deletes may be better alternatives if given more context.
 * Caching
