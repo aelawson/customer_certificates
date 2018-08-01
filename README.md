@@ -123,7 +123,7 @@ As far as coding design goes I would like to add at least the following:
 	* I actually disabled this for the certificates GET endpoint as I was having some invalidation bugs and couldn’t fix them in time.
 	* There may be better caching strategies to employ here given more context.
 * Integer IDs
-	* Would need to know what was consuming the API to make the best decision here. Ints seemed satisfactory and performant for the time being.
+	* Would need to know what was consuming the API to make the best decision here. Ints seemed satisfactory and performant for the time being (will allow for more than 2 billion rows on its own).
 * Base64-encoded Bytes
 	* Sending raw bytes (private keys) is done by Base64-encoding them in a JSON object. Again, there are other options (like `multipart/form-data`), but I think is pretty RESTful and not too space inefficient for private keys (~33% expansion).
 
