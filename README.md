@@ -103,6 +103,7 @@ A few particular things are also notably missing here:
 	* Could use nginx for this or something similar
 * Private Key Encryption (as waived in the prompt)
 * Authentication (as waived in the prompt)
+* Monitoring and Logging
 
 These would all be requirements if this were to be deployed in the real world as well.
 
@@ -124,7 +125,7 @@ As far as coding design goes I would like to add at least the following:
 * Integer IDs
 	* Would need to know what was consuming the API to make the best decision here. Ints seemed satisfactory and performant for the time being.
 * Base64-encoded Bytes
-	* Sending raw bytes (private keys) is done by Base64-encoding them in a JSON object. Again, there are other options (like `data/multipart-form`), but I think is pretty RESTful and not too space inefficient for private keys (~33% expansion).
+	* Sending raw bytes (private keys) is done by Base64-encoding them in a JSON object. Again, there are other options (like `multipart/form-data`), but I think is pretty RESTful and not too space inefficient for private keys (~33% expansion).
 
 ## Tests
 Tests are run in their own container so they can rely on their own environment / config block. By default, the setup is mostly the same as the `lcl` environment, but you could change it as you see fit.
