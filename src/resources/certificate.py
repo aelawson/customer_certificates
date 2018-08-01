@@ -66,9 +66,24 @@ class CertificatesResource:
                 description='User does not exist'
             )
 
-        certs = self.session.query(Certificate)\
-            .filter(Certificate.user_id == kwargs.get('user_id'))\
-            .all()
+        cert_query = self.session.query(Certificate)\
+            .filter(Certificate.user_id == kwargs.get('user_id'))
+
+        try:
+            filter_active = int(req.get_param('active', default=0))
+        except:
+            raise falcon.HTTPUnprocessableEntity(
+                description='Bad request format - active query parameter must be 0 or 1.'
+            )
+
+        if filter_active not in [0, 1]:
+            raise falcon.HTTPUnprocessableEntity(
+                description='Bad request format - active query parameter must be 0 or 1.'
+            )
+        elif filter_active == 1:
+            cert_query = cert_query.filter(Certificate.active == True)
+
+        certs = cert_query.all()
 
         resp.status = falcon.HTTP_200
         resp.body = json.dumps(list(

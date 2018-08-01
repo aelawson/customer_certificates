@@ -54,3 +54,47 @@ class TestCertsResource():
 
         assert result.status == falcon.HTTP_200
         assert len(certs) == 5
+
+    def test_cert_list_active(self, client, user, generate_n_certs):
+        result = client.simulate_get('/users/{user_id}/certificates'.format(user_id=user['id']))
+        certs = result.json
+
+        assert result.status == falcon.HTTP_200
+        assert len(certs) == 0
+
+        generated_certs = generate_n_certs(5, user)
+        generated_active_certs = generate_n_certs(3, user, active=True)
+
+        assert len(generated_certs) == 5
+        assert len(generated_active_certs) == 3
+
+        result = client.simulate_get(
+            '/users/{user_id}/certificates'.format(user_id=user['id']),
+            params={ 'active': 1 }
+        )
+        certs = result.json
+
+        assert result.status == falcon.HTTP_200
+        assert len(certs) == 3
+
+    def test_cert_list_active_fail_bad_query(self, client, user, generate_n_certs):
+        result = client.simulate_get(
+            '/users/{user_id}/certificates'.format(user_id=user['id']),
+            params={ 'active': 3 }
+        )
+
+        assert result.status == falcon.HTTP_422
+
+        result = client.simulate_get(
+            '/users/{user_id}/certificates'.format(user_id=user['id']),
+            params={ 'active': -1 }
+        )
+
+        assert result.status == falcon.HTTP_422
+
+        result = client.simulate_get(
+            '/users/{user_id}/certificates'.format(user_id=user['id']),
+            params={ 'active': 'true' }
+        )
+
+        assert result.status == falcon.HTTP_422

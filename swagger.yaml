@@ -99,6 +99,12 @@ paths:
           description: Internal server error
     get:
       summary: List certificates for a user
+      parameters:
+        - in: query
+          name: active
+          schema:
+            type: integer
+          description: Filter only active certificates if enabled otherwise all certificates are returned
       responses:
         '200':
           description: Certificates successfully found
@@ -162,10 +168,6 @@ components:
           type: string
     CertificatePost:
       properties:
-        user_id:
-          type: integer
-          format: int64
-          minimum: 1
         private_key:
           type: string
         active:

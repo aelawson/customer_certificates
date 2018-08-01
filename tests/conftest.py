@@ -15,12 +15,12 @@ Helper functions
 def create_private_key():
     return bytearray(random.getrandbits(8) for _ in range(100))
 
-def create_cert(client, user, private_key):
+def create_cert(client, user, private_key, active=False):
     b64_encoded_key = base64.b64encode(private_key).decode('utf-8')
 
     payload = {
         'private_key': b64_encoded_key,
-        'active': 0,
+        'active': 0 if not active else 1,
         'body': 'my test body'
     }
     result = client.simulate_post(
@@ -64,14 +64,19 @@ def user(request, client, fake):
     return create_user(client, fake)
 
 @pytest.fixture(scope='function')
-def cert(request, client, user, private_key):
-    return create_cert(client, user, private_key)
+def cert(request, client, user, private_key, active=False):
+    return create_cert(client, user, private_key, active=False)
 
 @pytest.fixture(scope='function')
 def generate_n_certs(request, client):
-    def __inner(n, user):
+    def __inner(n, user, active=False):
         return [
-            create_cert(client, user, create_private_key()) for _ in range(n)
+            create_cert(
+                client,
+                user,
+                create_private_key(),
+                active=active
+            ) for _ in range(n)
         ]
 
     return __inner
