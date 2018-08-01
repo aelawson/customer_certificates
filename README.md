@@ -26,7 +26,7 @@ docker-compose run api
 The API is exposed at `localhost:9000`. You can change this in `docker-compose.yaml` or when you run the Docker container.
 
 ## Usage
-This a HTTP-based / RESTful API. The only supported serialization format is JSON - ensure your `Accepts` header set set properly / will accept a `application/json` response. Your `Content-Type` header should also be set to `application/json` and ensure you are sending a JSON request body (when applicable). Trying to use any other format will result in a 400-level error.
+This a HTTP-based / RESTful API. The only supported serialization format is JSON - ensure your `Accept` header is set properly / will accept a `application/json` response. Your `Content-Type` header should also be set to `application/json` and ensure you are sending a JSON request body (when applicable). Trying to use any other format will result in a 400-level error.
 
 A few examples below demonstrate how to use the API with a REST / HTTP client (not exhaustive, please refer to the `swagger.yaml` file or even `app.py` for a complete list of endpoints):
 
