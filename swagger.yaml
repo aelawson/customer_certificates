@@ -140,7 +140,7 @@ paths:
               $ref: '#/components/schemas/CertificatePatch'
       responses:
         '202':
-          description: Certificate was successfully updated for user, but has to notify external system
+          description: Certificate status was successfully updated for user, but external system may still be processing
           content:
             application/json:
               schema:

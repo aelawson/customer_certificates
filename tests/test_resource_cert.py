@@ -22,6 +22,22 @@ class TestCertResource():
         assert data['id'] == cert['id']
         assert data['active'] == 1
 
+    def test_cert_activate_success_notify(self, client, cert):
+        result = client.simulate_patch(
+            '/users/{user_id}/certificates/{certificate_id}/active'.format(
+                user_id=cert['user_id'],
+                certificate_id=cert['id']
+            ),
+            json={ 'active': True, 'notify': True }
+        )
+
+        assert result.status == falcon.HTTP_202
+
+        data = result.json
+
+        assert data['id'] == cert['id']
+        assert data['active'] == 1
+
     def test_cert_activate_fail_missing_field(self, client, cert):
         result = client.simulate_patch(
             '/users/{user_id}/certificates/{certificate_id}/active'.format(
@@ -29,17 +45,6 @@ class TestCertResource():
                 certificate_id=cert['id']
             ),
             json={ }
-        )
-
-        assert result.status == falcon.HTTP_400
-
-    def test_cert_activate_fail_extra_fields(self, client, cert):
-        result = client.simulate_patch(
-            '/users/{user_id}/certificates/{certificate_id}/active'.format(
-                user_id=cert['user_id'],
-                certificate_id=cert['id']
-            ),
-            json={ 'active': True, 'fake': 'field' }
         )
 
         assert result.status == falcon.HTTP_400

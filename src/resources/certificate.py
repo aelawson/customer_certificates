@@ -105,10 +105,7 @@ class CertificateActiveResource():
         """
         try:
             payload = json.loads(req.stream.read().decode('utf-8'))
-            if len(payload) != 1 or 'active' not in payload:
-                raise falcon.HTTPBadRequest(
-                    description='Must provide only the following fields: active'
-                )
+            active_state = payload['active']
 
             cert_query = self.session.query(Certificate)\
                 .options(FromCache('default'))\
@@ -119,12 +116,17 @@ class CertificateActiveResource():
             cert = cert_query.one()
             cert_query.invalidate()
 
-            if payload['active'] == cert.active:
+            if active_state == cert.active:
                 raise falcon.HTTPBadRequest(
                     description='Certificate is already in the requested active state'
                 )
 
-            cert.active = payload['active']
+            cert.active = active_state
+            self.session.commit()
+        except KeyError:
+            raise falcon.HTTPBadRequest(
+                description='Missing one or more of the following fields: active'
+            )
         except NoResultFound:
             raise falcon.HTTPNotFound(
                 description='No certificate found for the specified user and certificate'
@@ -140,7 +142,8 @@ class CertificateActiveResource():
 
         # Notify external service of change
         try:
-            CertificateService.notify(cert.id, cert.active)
+            if payload.get('notify', False):
+                CertificateService.notify(cert.id, cert.active)
         except HTTPError as e:
             raise falcon.HTTPServiceUnavailable(
                 description="Internal service error: {error}".format(error=e)
