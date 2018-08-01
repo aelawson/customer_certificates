@@ -1,4 +1,5 @@
-# README
+# Customer Certificates
+
 ## About
 I built this certificate management API using Python, Falcon (REST API framework), SQLAlchemy, PostgreSQL, Redis, and Docker. Tests are written with the `pytest` testing framework.
 
@@ -97,16 +98,18 @@ HTTP Response:
 There are a bunch of things I would want some answers to / addressed if I were to release this app as a real production service. For example, how many users are expected, what are the expected read and write patterns (which may bring into questions optimizations like schema denormalization), the expected throughput, acceptable latency, SLAs, etc. This app and its dependencies (database, cache, etc) would absolutely need load-balancing, replication, possibly sharding/federation/etc., more thoughtful caching, etc. applied to them if they were truly going to be deployed as a fault-tolerant, performant service.
 
 A few particular things are also notably missing here:
-	* HTTPS / SSL Termination (data is insecurely transmitted right now)
-		* Could use nginx for this or something similar
-	* Private Key Encryption (as waived in the prompt)
-	* Authentication (as waived in the prompt)
+
+* HTTPS / SSL Termination (data is insecurely transmitted right now)
+	* Could use nginx for this or something similar
+* Private Key Encryption (as waived in the prompt)
+* Authentication (as waived in the prompt)
 
 These would all be requirements if this were to be deployed in the real world as well.
 
 As far as coding design goes I would like to add at least the following:
-	* Error handling middleware (removing resource-level error handling).
-	* Better test coverage
+
+* Error handling middleware (removing resource-level error handling).
+* Better test coverage
 
 ### Some Design Decisions
 
@@ -170,18 +173,25 @@ Detailed usage with `docker-compose`:
 
 To make a new migration after adjusting your model code:
 
-	1. Make sure your API and DB are running:
-		1. `docker-compose build api`
-	2. Run migration auto generator - provide description of the migration.
-		1. `docker-compose run api alembic revision --autogenerate -m "migration description"`
-	3. Follow steps below to apply this new migration.
+1. Make sure your API and DB are running:
+
+`docker-compose build api`
+
+2. Run migration auto generator - provide description of the migration.
+
+`docker-compose run api alembic revision --autogenerate -m "migration description"`
+
+3. Follow steps below to apply this new migration.
 
 To apply the latest migration (or initialize your database) using `docker-compose`:
 
-	1. Make sure your API and DB are running:
-		1. `docker-compose build api`
-	2. Apply the latest `head` of revisions to your database by running: 
-		1. `docker-compose run api alembic upgrade head`
+1. Make sure your API and DB are running:
+
+`docker-compose build api`
+
+2. Apply the latest `head` of revisions to your database by running: 
+
+`docker-compose run api alembic upgrade head`
 
 Without `docker-compose`:
 
