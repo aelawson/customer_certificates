@@ -178,3 +178,5 @@ components:
       properties:
         active:
           type: boolean
+        notify:
+          type: boolean

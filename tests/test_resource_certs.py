@@ -113,3 +113,12 @@ class TestCertsResource():
         )
 
         assert result.status == falcon.HTTP_422
+
+    def test_cert_create_fail_malformed(self, client, user):
+        payload = 'adsfasdf'
+        result = client.simulate_post(
+            '/users/{user_id}/certificates'.format(user_id=user['id']),
+            json=payload
+        )
+
+        assert result.status == falcon.HTTP_400

@@ -69,3 +69,12 @@ class TestUsersResource():
         )
 
         assert result.status == falcon.HTTP_400
+
+    def test_users_create_fail_malformed(self, client, fake):
+        payload = 'adsfasdf'
+        result = client.simulate_post(
+            '/users',
+            json=payload
+        )
+
+        assert result.status == falcon.HTTP_400

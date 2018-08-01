@@ -1,4 +1,4 @@
-from sqlalchemy.exc import IntegrityError, DataError
+from sqlalchemy.exc import IntegrityError, DataError, StatementError
 from sqlalchemy.orm.exc import NoResultFound
 
 import falcon
@@ -39,9 +39,13 @@ class UsersResource:
             raise falcon.HTTPConflict(
                 description='User with this email already exists'
             )
-        except DataError:
+        except (DataError, StatementError, json.decoder.JSONDecodeError):
             raise falcon.HTTPUnprocessableEntity(
-                description='Bad request format'
+                description='Bad request format - make sure all fields are the proper data type.'
+            )
+        except TypeError:
+            raise falcon.HTTPBadRequest(
+                description='Bad request format - not valid JSON.'
             )
 
         resp.status = falcon.HTTP_201
@@ -65,10 +69,6 @@ class UserResource:
                     User.id == kwargs.get('user_id')
                 )\
                 .one()
-        except KeyError:
-            raise falcon.HTTPBadRequest(
-                description='Missing one or more of the following fields: name, email, or password'
-            )
         except NoResultFound:
             raise falcon.HTTPNotFound(
                 description='User does not exist'

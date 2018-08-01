@@ -4,7 +4,7 @@ import json
 
 from requests.exceptions import HTTPError
 from sqlalchemy import exists
-from sqlalchemy.exc import DataError, IntegrityError
+from sqlalchemy.exc import DataError, IntegrityError, StatementError
 from sqlalchemy.orm.exc import NoResultFound
 
 from src.models.certificate import Certificate
@@ -44,9 +44,13 @@ class CertificatesResource:
             raise falcon.HTTPNotFound(
                 description='User does not exist'
             )
-        except DataError:
+        except (DataError, StatementError, json.decoder.JSONDecodeError):
             raise falcon.HTTPUnprocessableEntity(
                 description='Bad request format - make sure all fields are the proper data type.'
+            )
+        except TypeError:
+            raise falcon.HTTPBadRequest(
+                description='Bad request format - not valid JSON.'
             )
 
         resp.status = falcon.HTTP_201
@@ -99,15 +103,13 @@ class CertificateActiveResource():
         Handles PATCH requests.
         Updates active state for a certificate resource.
         """
-        payload = json.loads(req.stream.read().decode('utf-8'))
-
-        if len(payload) != 1 or 'active' not in payload:
-            raise falcon.HTTPBadRequest(
-                description='Must provide only the following fields: active'
-            )
-
-        # Update active status in the DB
         try:
+            payload = json.loads(req.stream.read().decode('utf-8'))
+            if len(payload) != 1 or 'active' not in payload:
+                raise falcon.HTTPBadRequest(
+                    description='Must provide only the following fields: active'
+                )
+
             cert_query = self.session.query(Certificate)\
                 .options(FromCache('default'))\
                 .filter(Certificate.id == kwargs.get('certificate_id'))\
@@ -126,6 +128,14 @@ class CertificateActiveResource():
         except NoResultFound:
             raise falcon.HTTPNotFound(
                 description='No certificate found for the specified user and certificate'
+            )
+        except (DataError, StatementError, json.decoder.JSONDecodeError):
+            raise falcon.HTTPUnprocessableEntity(
+                description='Bad request format - make sure all fields are the proper data type.'
+            )
+        except TypeError:
+            raise falcon.HTTPBadRequest(
+                description='Bad request format - not valid JSON.'
             )
 
         # Notify external service of change
