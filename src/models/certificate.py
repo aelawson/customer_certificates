@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, SmallInteger, LargeBinary, Text
+from sqlalchemy import Column, Integer, Boolean, LargeBinary, Text
 from sqlalchemy.schema import ForeignKey
 
 from src.models import Base
@@ -10,7 +10,7 @@ class Certificate(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey(User.id, ondelete='CASCADE'), nullable=False)
     private_key = Column(LargeBinary, nullable=False)
-    active = Column(SmallInteger, nullable=False)
+    active = Column(Boolean, nullable=False)
     body = Column(Text, nullable=False)
 
     def __repr__(self):
