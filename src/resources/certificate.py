@@ -57,23 +57,18 @@ class CertificatesResource:
         Handles GET requests.
         Lists certificate resources for a user.
         """
-        try:
-            user_exists = self.session.query(
-                exists().where(User.id == kwargs.get('user_id'))
-            ).scalar()
+        user_exists = self.session.query(
+            exists().where(User.id == kwargs.get('user_id'))
+        ).scalar()
 
-            if not user_exists:
-                raise falcon.HTTPNotFound(
-                    description='User does not exist'
-                )
-
-            certs = self.session.query(Certificate)\
-                .filter(Certificate.user_id == kwargs.get('user_id'))\
-                .all()
-        except NoResultFound:
+        if not user_exists:
             raise falcon.HTTPNotFound(
-                description='No certificates found for the specified user'
+                description='User does not exist'
             )
+
+        certs = self.session.query(Certificate)\
+            .filter(Certificate.user_id == kwargs.get('user_id'))\
+            .all()
 
         resp.status = falcon.HTTP_200
         resp.body = json.dumps(list(
