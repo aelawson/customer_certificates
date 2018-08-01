@@ -20,7 +20,7 @@ docker-compose run api alembic upgrade head
 
 Finally, to run the application, execute:
 ```
-docker-compose run api
+docker-compose up api
 ```
 
 The API is exposed at `localhost:9000`. You can change this in `docker-compose.yaml` or when you run the Docker container.
@@ -135,7 +135,7 @@ Tests are run in their own container so they can rely on their own environment /
 To run all test suites, just run the following (beware of pesky Docker caching if you end up changing anything). Make sure you have run the database migrations as noted above afterwards as well:
 
 ```
-docker-compose run api-test
+docker-compose up api-test
 ```
 
 You can also run individual suites by overriding the default command for the container - see PyTest docs for how that’s done.
@@ -176,7 +176,7 @@ Detailed usage with `docker-compose`:
 
 To make a new migration after adjusting your model code:
 
-1. Make sure your API and DB are running:
+1. Make sure your API and DB are built:
 
 `docker-compose build api`
 
@@ -188,7 +188,7 @@ To make a new migration after adjusting your model code:
 
 To apply the latest migration (or initialize your database) using `docker-compose`:
 
-1. Make sure your API and DB are running:
+1. Make sure your API and DB are built:
 
 `docker-compose build api`
 
@@ -198,4 +198,4 @@ To apply the latest migration (or initialize your database) using `docker-compos
 
 Without `docker-compose`:
 
-You can more or less run the same commands sans the `docker-compose run` prefix in whatever context you need. If you are using vanilla docker, just supply the command when running the container.
+You can more or less run the same commands sans the `docker-compose run/up` prefix in whatever context you need. If you are using vanilla docker, just supply the command when running the container.
