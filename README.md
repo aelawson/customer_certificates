@@ -95,7 +95,7 @@ HTTP Response:
 
 ### Future Work / Other considerations
 
-There are a bunch of things I would want some answers to / addressed if I were to release this app as a real production service. For example, how many users are expected, what are the expected read and write patterns (which may bring into questions optimizations like schema denormalization), the expected throughput, acceptable latency, SLAs, etc. This app and its dependencies (database, cache, etc) would absolutely need load-balancing, replication, possibly sharding/federation/etc., more thoughtful caching, etc. applied to them if they were truly going to be deployed as a fault-tolerant, performant service.
+There are a bunch of things I would want some answers to / addressed if I were to release this app as a real production service. For example, how many users are expected, what are the expected read and write patterns (which may bring into questions optimizations like schema denormalization), the expected throughput, acceptable latency, SLAs, etc. This app and its dependencies (database, cache, etc) would absolutely need load-balancing, replication, possibly sharding or federation, more thoughtful caching, etc. applied to them if this was truly going to be deployed as a fault-tolerant, performant service.
 
 A few particular things are also notably missing here:
 
@@ -124,7 +124,7 @@ As far as coding design goes I would like to add at least the following:
 	* I implemented some pretty basic object caching in front of SQL Alchemy with Redis and Dogpile.
 	* I actually disabled this for the certificates GET endpoint as I was having some invalidation bugs and couldn’t fix them in time.
 	* There may be better caching strategies to employ here given more context.
-* Integer IDs
+* Integer IDs / Primary Key
 	* Would need to know what was consuming the API to make the best decision here. Ints seemed satisfactory and performant for the time being (will allow for more than 2 billion rows on its own).
 * Base64-encoded Bytes
 	* Sending raw bytes (private keys) is done by Base64-encoding them in a JSON object. Again, there are other options (like `multipart/form-data`), but I think is pretty RESTful and not too space inefficient for private keys (~33% expansion).
