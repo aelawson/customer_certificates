@@ -7,6 +7,6 @@ psycopg2==2.7.5
 alembic==1.0.0
 Faker==0.1.4
 bcrypt==3.1.4
-requests==2.19.1
+requests==2.31.0
 dogpile.cache==0.6.7
 redis==2.10.6
